@@ -11,6 +11,13 @@ import random
 import os
 
 # function to clear screen
+<<<<<<< HEAD
 def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
+=======
+
+
+def cls():
+    os.system('cls' if os.name == 'nt' else 'clear')
+>>>>>>> origin/main
