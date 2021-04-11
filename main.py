@@ -11,13 +11,12 @@ import random
 import os
 
 # function to clear screen
-<<<<<<< HEAD
 def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-=======
+# Playing card deck list
+card_deck = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen',
+             'King', 'Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
 
-
-def cls():
-    os.system('cls' if os.name == 'nt' else 'clear')
->>>>>>> origin/main
+# Faced card dictionary and value of the number of turns for each face
+face_card_num = {'Ace': 4, 'King': 3, 'Queen': 2, 'Jack': 1}
