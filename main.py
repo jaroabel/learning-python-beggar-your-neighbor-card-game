@@ -71,6 +71,8 @@ def display_rules(uInput):
 
 
 
+
+
 # Function to initialize the game (get player name, shuffle and split deck)
 def game_setting(playerDeckAssigned):
     # First initialization has to be done only once
