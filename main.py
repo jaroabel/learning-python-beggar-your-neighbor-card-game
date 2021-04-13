@@ -48,6 +48,8 @@ def display_rules(uInput):
     cls()
     print(f"User choice: {uInput}")
     while True:
+
+        print(f"{display_cards[0]}")
         rulesInput = input(f"Type --resume to resume game: ").lower()
         if rulesInput != "--help" and rulesInput != "--resume":
             print("[Error] please enter --help OR --resume: ")
@@ -66,8 +68,7 @@ def display_rules(uInput):
         print("In condition 2")
         game_setting(False)
     else:
-        cls()
-        return_to_currentGame()
+        return False
 
 
 
@@ -134,6 +135,9 @@ class Player():
     def getName(self):
         return self._player_name
 
+    def getPlayerId(self):
+        return self.player_id
+
     def getPlayerDeck(self):
         return self._player_deck
 
@@ -169,10 +173,67 @@ class GameProcess():
 
 
 
+# Function checking user input
+def checkUserInput(uInput):
+    if uInput == "--help" or uInput == "--resume":
+        return display_rules(uInput)
+    else:
+        return True
+
+
+def counterPlayerFaceCard(player_id, numVal):
+    if player_id == 1:
+        name = playerOne.getName()
+    else:
+        name = playerTwo.getName()
+
+    print(f"A face card was flipped by {name} you have {numVal} chance(s) to counter with a face card of your own")
+    for i in range(numVal):
+        print(f"counter 'i' ==> {i} and var 'numVal' {numVal}")
+        if player_id == 1:
+            uInput = input("{} Press ENTER key to play a card: ".format(playerTwo.getName())).lower()
+            if uInput != "": # and checkUserInput(uInput) == False:
+                uInput = input("{} Press ENTER key to play a card: ".format(playerTwo.getName())).lower()
+
+            elif uInput == "":
+                popedCard = playerTwo.getAcardFromPlayerDeck()  # Flip card from players deck
+                print(f"Poped card {popedCard}")
+                game_process.addToDiscardDeck(popedCard)  # Add card to discard deck
+                isFace, numVal = game_process.checkIfFaceCard(popedCard)  # Check if flipped card is a face card
+                if isFace:
+                    counterPlayerFaceCard(2, numVal)
+                else:
+                    print(displayPlayingTable(popedCard))
+                    continue
+        if player_id == 2:
+            print(f"counter 'i' ==> {i} and var 'numVal' {numVal}")
+            uInput = input("{} Press ENTER key to play a card: ".format(playerOne.getName())).lower()
+            if uInput != "": # and checkUserInput(uInput) == False:
+                uInput = input("{} Press ENTER key to play a card: ".format(playerOne.getName())).lower()
+
+            elif uInput == "":
+                popedCard = playerOne.getAcardFromPlayerDeck()  # Flip card from players deck
+                game_process.addToDiscardDeck(popedCard)  # Add card to discard deck
+                isFace, numVal = game_process.checkIfFaceCard(popedCard)  # Check if flipped card is a face card
+                if isFace:
+                    counterPlayerFaceCard(1, numVal)
+                else:
+                    print(displayPlayingTable(popedCard))
+                    continue
+
+
+        return player_id
+
+
+
 # Initializing Player and GameProcess class
 playerOne = Player(players_id[0])
 playerTwo = Player(players_id[1])
-game_process = GameProcess
+game_process = GameProcess()
+
+def displayPlayingTable(playedCard):
+    return display_cards[0].format(len(playerOne.getPlayerDeck())) + " " + display_cards[1].format(playedCard) + " " + display_cards[0].format(len(playerTwo.getPlayerDeck()))
+
 
 
 #  Initializing game
@@ -181,28 +242,67 @@ player_deck_assigned = game_setting(player_deck_assigned)
 print(f"Player 1 ==> {playerOne}")
 print(f"Player 1 ==> {playerTwo}")
 
-# playing_turns  = True # True = Player 1 start first turn
-# cls()
+playing_turns  = 1 #
+#cls()
 
-# while True:
-#     if playing_turns:
-#         popedCard = playerOne.getAcardFromPlayerDeck() # Flip card from players deck
-#         game_process.addToDiscardDeck(popedCard) # Add card to discard deck
-#         isFace, numVal = game_process.checkIfFaceCard(popedCard) # Check if flipped card is a face card
-#         if isFace:
-#             print(f"A face card was flipped by {playerOne.getName()} you have {numVal} chance(s) to counter with a face card of your own")
-#             for i in range(numVal):
-#                 uInput = input("Press ENTER key to play a card: ")
-#                 if uInput == ""
-#                    popedCard = playerTwo.getAcardFromPlayerDeck()  # Flip card from players deck
-#                     game_process.addToDiscardDeck(popedCard)  # Add card to discard deck
-#                     isFace, numVal = game_process.checkIfFaceCard(popedCard)  # Check if flipped card is a face card
-#                     if isFace:
-#                         playerOne.addToPlayerDeck()
+def playGame(playingTurns):
+    while True:
+         print(f"Current player ===> {playingTurns}")
+         if playingTurns == 1:
+            uInput = input("{} Press ENTER key to play a card: ".format(playerOne.getName())).lower()
+            if uInput != "" and not checkUserInput(uInput):
+                uInput = input("{} Press ENTER key to play a card: ".format(playerOne.getName())).lower()
+                # check if only ENTER key was pressed
+            elif uInput == "":
+                popedCard = playerOne.getAcardFromPlayerDeck() # Flip card from players deck
+                print(f"Popped card ==> {popedCard}")
+                game_process.addToDiscardDeck(popedCard) # Add card to discard deck
+                isFace, numVal = game_process.checkIfFaceCard(popedCard) # Check if flipped card is a face card
+                if isFace:
+                    print(displayPlayingTable(popedCard))
+                    player_id = counterPlayerFaceCard(1, numVal)
+                    if player_id == 1:
+                        playerOne.addToPlayerDeck(game_process.getDiscardDeck())
+                    else:
+                        playerTwo.addToPlayerDeck(game_process.getDiscardDeck())
+
+                    game_process.resetDiscardDeck()
+                else:
+                    print(displayPlayingTable(popedCard))
+                    playingTurns = 2
+            else:
+                print("Error: {}, You Please press the ENTER Key, or type '--help' or '--resume' ")
+                playGame(1)
+            playingTurns = 2
+         elif playingTurns == 2:
+             uInput = input("{} Press ENTER key to play a card: ".format(playerTwo.getName())).lower()
+             if uInput != "" and not checkUserInput(uInput):
+                 uInput = input("{} Press ENTER key to play a card: ".format(playerTwo.getName())).lower()
+             # check if only ENTER key was pressed
+             elif uInput == "":
+                 popedCard = playerTwo.getAcardFromPlayerDeck()  # Flip card from players deck
+                 game_process.addToDiscardDeck(popedCard)  # Add card to discard deck
+                 isFace, numVal = game_process.checkIfFaceCard(popedCard)  # Check if flipped card is a face card
+                 if isFace:
+                     print(displayPlayingTable(popedCard))
+                     player_id = counterPlayerFaceCard(1, numVal)
+                     if player_id == 1:
+                         playerOne.addToPlayerDeck(game_process.getDiscardDeck())
+                     else:
+                         playerTwo.addToPlayerDeck(game_process.getDiscardDeck())
+                     game_process.resetDiscardDeck()
+                 else:
+                     print(displayPlayingTable(popedCard))
+                     playingTurns = 1
+             else:
+                 print("Error: {}, You Please press the ENTER Key, or type '--help' or '--resume' ")
+                 playGame(2)
+             playingTurns = 1
 
 
-#                elif uInput == "--help" or uInput == "--resume":
-#                     display_rules(uInput)
+displayTable = display_cards[0].format(len(playerOne.getPlayerDeck())) + " " + display_cards[2] + " " + display_cards[0].format(len(playerTwo.getPlayerDeck()))
+print(displayTable)
+playGame(playing_turns)
 
 
 
