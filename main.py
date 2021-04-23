@@ -137,7 +137,7 @@ def goingToWar():
             return still_has_cards
 
     print(
-        f"\033[1;37;40m[WAR] Player 1 Deck {len(playerOne.getPlayerDeck())} ----- [{card_1} ==== {card_2}] ----- Player 2 Deck {len(playerTwo.getPlayerDeck())}")
+        f"\033[1;37;40m[WAR] Total cards in {playerOne.getPlayerName()} Deck {len(playerOne.getPlayerDeck())} ----- [{card_1} ==== {card_2}] ----- Total cards in {playerTwo.getPlayerName()} Deck {len(playerTwo.getPlayerDeck())}")
     print("\033[0;31;47m\n################ WAR ENDED ################\n")  # color red
     return card1, card2, card_1, card_2
 
@@ -271,7 +271,7 @@ def startGame():
 
         print("")
         print("")
-        input(" --------- Press any key to contine --------- ")
+        input(" --------- Press ENTER key to continue --------- ")
         print("")
         cls()
         print("\033[1;32;40m=============================================")
@@ -282,7 +282,7 @@ def startGame():
             break
         else:
             print(
-                f"\033[0;37;40m {playerOne.getPlayerName()} Deck {len(playerOne.getPlayerDeck())} ----- [{card_1} ==== {card_2}] ----- {playerTwo.getPlayerName()} Deck {len(playerTwo.getPlayerDeck())}")
+                f"\033[0;37;40m Total cards in {playerOne.getPlayerName()} Deck {len(playerOne.getPlayerDeck())} ----- [{card_1} ==== {card_2}] ----- Total cards in {playerTwo.getPlayerName()} Deck {len(playerTwo.getPlayerDeck())}")
 
         if int(card1) == int(card2):
             print(
