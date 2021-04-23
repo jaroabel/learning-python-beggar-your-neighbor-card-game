@@ -19,110 +19,12 @@ from game_rules import game_rules
 def cls():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
-<<<<<<< HEAD
-# Playing card deck list
-card_deck = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen',
-             'King', 'Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace', '2', '3', '4',
-             '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King', 'Ace', '2', '3', '4', '5', '6', '7', '8', '9',
-             '10', 'Jack', 'Queen', 'King']
-
-display_cards = ["""
-________
-| TOTAL |
-| CARDS |
-|   {}  |
---------""", """
-________
-|      |
-|  {}  
-|      |
---------""", """
-________
-|      |
-|      |
-|      |
---------"""]
-player_deck_assigned = False
-players_id = (1, 2)
-
-
-
-# Display rules function
-def display_rules(uInput):
-    cls()
-    print(f"User choice: {uInput}")
-    while True:
-        rulesInput = input(f"Type --resume to resume game: ").lower()
-        if rulesInput != "--help" and rulesInput != "--resume":
-            print("[Error] please enter --help OR --resume: ")
-        elif rulesInput == "--help":
-            display_rules(rulesInput)
-            break
-        else:
-            break
-
-    if playerOne.getName() == "" and playerTwo.getName() == "":
-        cls()
-        print("In condition 1")
-        game_setting(False)
-    elif playerOne.getName() != "" or playerTwo.getName() != "":
-        cls()
-        print("In condition 2")
-        game_setting(False)
-    else:
-        cls()
-        return_to_currentGame()
-
-
-
-
-
-# Function to initialize the game (get player name, shuffle and split deck)
-def game_setting(playerDeckAssigned):
-    # First initialization has to be done only once
-    if not playerDeckAssigned:
-        alternate_deck = True
-        # Shuffle main card deck
-        random.shuffle(card_deck)
-        player1_deck = []
-        player2_deck = []
-        # Splitting the main deck between the two players
-        for i in range(len(card_deck) - 1, -1, -1):
-            if alternate_deck:
-                # adding cards to player 1 deck
-                player1_deck.append(card_deck[i])
-                alternate_deck = False
-            else:
-                # adding cards to player 2 deck
-                player2_deck.append(card_deck[i])
-                alternate_deck = True
-
-        # Setting players one
-        if playerOne.getName() == "":
-            userInput = input("Enter player 1 name: ").lower()
-            if userInput == "--help" or userInput == "--resume":
-                display_rules(userInput)
-            else:
-                playerOne.setName(userInput.capitalize())
-                playerOne.setPlayerDeck(player1_deck)
-
-        # Setting players two
-        if playerTwo.getName() == "":
-            userInput = input("Enter player 2 name: ").lower()
-            if userInput == "--help" or userInput == "--resume":
-                display_rules(userInput)
-            else:
-                playerTwo.setName(userInput.capitalize())
-                playerTwo.setPlayerDeck(player2_deck)
-=======
 # Player class
 class Player():
     def __init__(self, player_id=0, name="", playerDeck=[]):
         self.player_id = player_id
         self.name = name
         self.player_deck = playerDeck
->>>>>>> 371d99a0e5b8a8a0328eff1fc0e461f97ccaba5e
 
     def getPlayerName(self):
         return self.name
@@ -355,7 +257,8 @@ def startGame():
 
     playerOneName = input("\033[1;37;40mEnter Player One name: ")
     playerTwoName = input("\033[1;37;40mEnter Player Two name: ")
-
+    random.shuffle(player1_deck)
+    random.shuffle(player2_deck)
     playerOne = Player(1, playerOneName, player1_deck)
     playerTwo = Player(2, playerTwoName, player2_deck)
 
